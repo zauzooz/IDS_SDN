@@ -89,3 +89,5 @@ Trở lại với containernet console, gõ `pingall`:
 Và mở xterm của **ids** quan sát ta có :
 
 ![](https://raw.githubusercontent.com/zauzooz/IDS_SDN/master/mirroring/picture/monitor.png)
+
+Vậy là xong, chúng ta đã xây dựng được một IDS cơ bản cho mạng SDN.
