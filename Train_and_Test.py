@@ -1,7 +1,5 @@
-# get data set for test from https://github.com/Mamcose/NSL-KDD-Network-Intrusion-Detection
-
 import pandas as pd
-from sklearn import tree
+import numpy as np
 
 # 1
 protocol = {'udp': 0, 'tcp': 1, 'icmp': 2}
@@ -11,9 +9,12 @@ typeA = {'other': 0, 'private': 1, 'http': 2, 'remote_job': 3, 'ftp_data': 4, 'n
 # 3
 typeB = {'SF': 0, 'S0': 1, 'REJ': 2, 'RSTR': 3, 'SH': 4,
          'RSTO': 5, 'S1': 6, 'RSTOS0': 7, 'S3': 8, 'S2': 9, 'OTH': 10}
+# 4
+lable = {'normal': 0, 'neptune': 1, 'warezclient': 2, 'ipsweep': 3, 'portsweep': 4, 'teardrop': 5, 'nmap': 6, 'satan': 7, 'smurf': 8, 'pod': 9, 'back': 10, 'guess_passwd': 11, 'ftp_write': 12, 'multihop': 13, 'rootkit': 14, 'buffer_overflow': 15, 'imap': 16, 'warezmaster': 17, 'phf': 18, 'land': 19,
+         'loadmodule': 20, 'spy': 21, 'perl': 22, 'saint': 23, 'mscan': 24, 'apache2': 25, 'snmpgetattack': 26, 'processtable': 27, 'httptunnel': 28, 'ps': 29, 'snmpguess': 30, 'mailbomb': 31, 'named': 32, 'sendmail': 33, 'xterm': 34, 'worm': 35, 'xlock': 36, 'xsnoop': 37, 'sqlattack': 38, 'udpstorm': 39}
 
-if __name__ == "__main__":
-    # Training
+
+def NSL_KDD_X_Y_Train():
     pathTrain = "D:\\NCKH\\IDS_SDN\\datasets\\NSL_KDD_Train.csv"
     dataTrain = pd.read_csv(pathTrain)
     train = dataTrain.values
@@ -24,16 +25,14 @@ if __name__ == "__main__":
             item[2] = typeA[item[2]]
         if (item[3] in typeB):
             item[3] = typeB[item[3]]
-        if (item[-1] == 'normal'):
-            item[-1] = 0
-        else:
-            item[-1] = 1
+        if (item[-1] in lable):
+            item[-1] = lable[item[-1]]
     X_train = train[:, :-1]
     Y_train = train[:, -1]
-    Y_train = Y_train.astype('int')
-    clf = tree.DecisionTreeClassifier()
-    clf.fit(X_train, Y_train)
-    # Testing
+    return (X_train, Y_train)
+
+
+def NSL_KDD_X_Y_Test():
     pathTest = "D:\\NCKH\\IDS_SDN\\datasets\\NSL_KDD_Test.csv"
     dataTest = pd.read_csv(pathTest)
     test = dataTest.values
@@ -44,34 +43,12 @@ if __name__ == "__main__":
             item[2] = typeA[item[2]]
         if (item[3] in typeB):
             item[3] = typeB[item[3]]
-        if (item[-1] == 'normal'):
-            item[-1] = 0
-        else:
-            item[-1] = 1
+        if (item[-1] in lable):
+            item[-1] = lable[item[-1]]
     X_test = test[:, :-1].astype('int')
     Y_test = test[:, -1].astype('int')
-    Y_predict = clf.predict(X_test)
-    # Evaluate
-    N = len(Y_test)
-    TruePositive = 0
-    TrueNegative = 0
-    FalsePositive = 0
-    FalseNegative = 0
-    for i in range(0, N):
-        if (Y_test[i] == 1):
-            if (Y_test[i] == Y_predict[i]):
-                TruePositive = TruePositive + 1
-            else:
-                FalseNegative = FalseNegative + 1
-        if (Y_test[i] == 0):
-            if (Y_test[i] == Y_predict[i]):
-                TrueNegative = TrueNegative + 1
-            else:
-                FalsePositive = FalsePositive + 1
-    print("True Positive   " + str(TruePositive))
-    print("True Negative   " + str(TrueNegative))
-    print("False Positive  " + str(FalsePositive))
-    print("False Negative  " + str(FalseNegative))
-    print("Total           " + str(TruePositive +
-          TrueNegative + FalsePositive + FalseNegative))
-    print("Length of Test  " + str(N))
+    return (X_test, Y_test)
+
+
+X_train, Y_train = NSL_KDD_X_Y_Train()
+X_test, Y_test = NSL_KDD_X_Y_Test()
