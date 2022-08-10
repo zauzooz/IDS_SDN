@@ -69,4 +69,6 @@ if __name__ == "__main__":
     Y = np.array(y)
     plt.barh(X, Y)
     plt.grid(axis='x')
+    plt.xlabel("number of instances")
+    plt.ylabel("type")
     plt.show()
