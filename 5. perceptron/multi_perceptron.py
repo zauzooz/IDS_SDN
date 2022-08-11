@@ -100,7 +100,6 @@ class Network:
 if __name__ == "__main__":
     print("Multi Perceptron Network: ")
     X_train = np.array([[2, 1], [4, 8], [9, 6], [4, 11]])
-    Y_train = np.array([[2], [4], [9], [7]])
     network = Network([4, 1, 3, 5, 1, 6, 1], X_train.shape[1])
     network.PrintNetwork()
     print("input:  ")
